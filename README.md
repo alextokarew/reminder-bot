@@ -1,4 +1,2 @@
-# telegram-bot-framework
-A simple framework for writing bots for telegram.me messenger
-
-More detailed description is coming soon...
+# Reminder telegram bot
+A bot for sending reminders depending on context, date, time and place.

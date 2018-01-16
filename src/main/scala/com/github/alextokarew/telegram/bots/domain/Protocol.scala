@@ -172,10 +172,10 @@ object Protocol {
       */
     case class ChosenInlineResult(
       result_id: String,
-      from:	User,
+      from: User,
       location: Option[Location],
       inline_message_id: Option[String],
-      query:	String
+      query: String
     )
 
     /**
@@ -186,8 +186,8 @@ object Protocol {
       * @param user_id Contact's user identifier in Telegram
       */
     case class Contact(
-      phone_number:	String,
-      first_name:	String,
+      phone_number: String,
+      first_name: String,
       last_name: Option[String],
       user_id: Option[Long]
     )
@@ -337,7 +337,7 @@ object Protocol {
       `type`:String,
       offset: Int,
       length: Int,
-      url:	Option[String],
+      url: Option[String],
       user: Option[User]
     )
 

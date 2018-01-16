@@ -1,13 +1,13 @@
-organization := "com.github.alextokarew.telegram.bots"
+organization := "com.github.alextokarew.telegram.bots.reminder"
 
-name := "telegram-bot-framework"
+name := "reminder-bot"
 
 version := "1.0.0-SNAPSHOT"
 
-scalaVersion := "2.12.2"
+scalaVersion := "2.12.4"
 
-val akkaVersion = "2.5.3"
-val akkaHttpVersion = "10.0.9"
+val akkaVersion = "2.5.9"
+val akkaHttpVersion = "10.0.11"
 
 libraryDependencies ++= Seq(
 
