@@ -9,25 +9,25 @@ import spray.json.{DefaultJsonProtocol, JsValue, JsonFormat, RootJsonFormat}
 trait Protocol extends SprayJsonSupport with DefaultJsonProtocol {
   import Protocol.Responses._
 
-  implicit val audioFormat = jsonFormat6(Audio)
-  implicit val chatFormat = jsonFormat6(Chat)
-  implicit val contactFormat = jsonFormat4(Contact)
-  implicit val locationFormat = jsonFormat2(Location)
-  implicit val photoSizeFormat = jsonFormat4(PhotoSize)
-  implicit val documentFormat = jsonFormat5(Document)
-  implicit val stickerFormat = jsonFormat6(Sticker)
-  implicit val userFormat = jsonFormat4(User)
-  implicit val messageEntityFormat = jsonFormat5(MessageEntity)
-  implicit val inlineQueryFormat = jsonFormat5(InlineQuery)
-  implicit val userProfilePhotosFormat = jsonFormat2(UserProfilePhotos)
-  implicit val venueFormat = jsonFormat4(Venue)
-  implicit val videoFormat = jsonFormat7(Video)
-  implicit val voiceFormat = jsonFormat4(Voice)
+  implicit val audioFormat: RootJsonFormat[Audio] = jsonFormat6(Audio)
+  implicit val chatFormat: RootJsonFormat[Chat] = jsonFormat6(Chat)
+  implicit val contactFormat: RootJsonFormat[Contact] = jsonFormat4(Contact)
+  implicit val locationFormat: RootJsonFormat[Location] = jsonFormat2(Location)
+  implicit val photoSizeFormat: RootJsonFormat[PhotoSize] = jsonFormat4(PhotoSize)
+  implicit val documentFormat: RootJsonFormat[Document] = jsonFormat5(Document)
+  implicit val stickerFormat: RootJsonFormat[Sticker] = jsonFormat6(Sticker)
+  implicit val userFormat: RootJsonFormat[User] = jsonFormat4(User)
+  implicit val messageEntityFormat: RootJsonFormat[MessageEntity] = jsonFormat5(MessageEntity)
+  implicit val inlineQueryFormat: RootJsonFormat[InlineQuery] = jsonFormat5(InlineQuery)
+  implicit val userProfilePhotosFormat: RootJsonFormat[UserProfilePhotos] = jsonFormat2(UserProfilePhotos)
+  implicit val venueFormat: RootJsonFormat[Venue] = jsonFormat4(Venue)
+  implicit val videoFormat: RootJsonFormat[Video] = jsonFormat7(Video)
+  implicit val voiceFormat: RootJsonFormat[Voice] = jsonFormat4(Voice)
 
   /**
     * Explicitly defining JsonFormat for Message case class because it has more than 22 arguments
     */
-  implicit val messageFormat = new RootJsonFormat[Message] {
+  implicit val messageFormat: RootJsonFormat[Message]  = new RootJsonFormat[Message] {
     lazy val reader = new MessageReader
 
     def write(obj: Message): JsValue =
@@ -37,7 +37,7 @@ trait Protocol extends SprayJsonSupport with DefaultJsonProtocol {
   }
 
   private[Protocol] class MessageReader {
-    val fieldNames = extractFieldNames(classManifest[Message])
+    val fieldNames: Array[String] = extractFieldNames(classManifest[Message])
 
     private def forField[T: JsonFormat](v: JsValue, pos: Int): T =
       fromField(v, fieldNames(pos))(implicitly[JsonFormat[T]])
@@ -78,14 +78,14 @@ trait Protocol extends SprayJsonSupport with DefaultJsonProtocol {
     )
   }
 
-  implicit val callbackQueryFormat = jsonFormat5(CallbackQuery)
-  implicit val chosenInlineResultFormat = jsonFormat5(ChosenInlineResult)
-  implicit val updateFormat = jsonFormat6(Update)
+  implicit val callbackQueryFormat: RootJsonFormat[CallbackQuery] = jsonFormat5(CallbackQuery)
+  implicit val chosenInlineResultFormat: RootJsonFormat[ChosenInlineResult] = jsonFormat5(ChosenInlineResult)
+  implicit val updateFormat: RootJsonFormat[Update] = jsonFormat6(Update)
 
   /**
     * Explicitly defining JsonFormat for OkWrapper because it has type parameter.
     */
-  implicit def okWrapperFormat[T : JsonFormat] = new OkWrapperFormat[T]
+  implicit def okWrapperFormat[T : JsonFormat]: OkWrapperFormat[T] = new OkWrapperFormat[T]
 
   private[Protocol] class OkWrapperFormat[T : JsonFormat] extends RootJsonFormat[OkWrapper[T]] {
     override def write(obj: OkWrapper[T]): JsValue =
