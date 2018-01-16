@@ -1,13 +1,13 @@
 package com.github.alextokarew.telegram.bots.platform.flow
 
-import akka.actor.Actor
+import akka.actor.{Actor, ActorLogging}
 
 /**
   * Created by alextokarev on 05.09.16.
   * TODO: deleteme
   */
-class Printer extends Actor {
+class Printer extends Actor with ActorLogging {
   override def receive: Receive = {
-    case m => println(m)
+    case m => log.info("Message: {}", m)
   }
 }

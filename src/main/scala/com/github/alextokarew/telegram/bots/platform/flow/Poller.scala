@@ -1,6 +1,6 @@
 package com.github.alextokarew.telegram.bots.platform.flow
 
-import akka.actor.{Actor, ActorRef, Props}
+import akka.actor.{Actor, ActorLogging, ActorRef, Props}
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model.{HttpRequest, HttpResponse, StatusCodes}
 import akka.http.scaladsl.unmarshalling.Unmarshal
@@ -14,7 +14,7 @@ import com.github.alextokarew.telegram.bots.domain.Protocol.Responses.{OkWrapper
  * @param url base telegram url
  * @param timeout poll timeout in seconds
  */
-class Poller(consumer: ActorRef, url: String, timeout: Int) extends Actor with Protocol {
+class Poller(consumer: ActorRef, url: String, timeout: Int) extends Actor with Protocol with ActorLogging {
   import Poller._
   import akka.pattern.pipe
   import context.dispatcher
@@ -38,6 +38,7 @@ class Poller(consumer: ActorRef, url: String, timeout: Int) extends Actor with P
 
     case response: Response =>
       response.result.foreach { update =>
+        log.debug("Processing update: {}", update)
         update.message.foreach { message =>
           consumer ! message
         }
