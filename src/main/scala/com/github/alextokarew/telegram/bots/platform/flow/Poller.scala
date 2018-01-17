@@ -42,10 +42,9 @@ class Poller(consumer: ActorRef, url: String, timeout: Int, retryInterval: Int) 
     case response: Response =>
       response.result.foreach { update =>
         log.debug("Processing update: {}", update)
-        update.message.foreach { message =>
+        update.message.orElse(update.edited_message).foreach { message =>
           consumer ! message
         }
-        //TODO deal with edited messages
       }
 
       if (response.result.nonEmpty) {
