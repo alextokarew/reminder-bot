@@ -4,14 +4,18 @@ import akka.actor.{ActorSystem, Props}
 import com.github.alextokarew.telegram.bots.domain.Protocol
 import com.github.alextokarew.telegram.bots.platform.flow.{Poller, Printer}
 import com.typesafe.config.ConfigFactory
+import org.slf4j.LoggerFactory
 
 /**
-  * Created by alextokarew on 30.08.16.
+  * Application entry point.
   */
 object Application extends Protocol {
 
+  private val log = LoggerFactory.getLogger(this.getClass)
+
   def main(args: Array[String]): Unit = {
-    println("Starting bot's backend") //TODO log
+
+    log.info("Starting reminder bot's backend")
 
     implicit val system: ActorSystem = ActorSystem("reminderbot")
 
