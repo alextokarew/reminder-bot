@@ -1,8 +1,8 @@
-package com.github.alextokarew.telegram.bots.platform.flow
+package com.github.alextokarew.telegram.bots.platform.actors
 
 import akka.actor.ActorSystem
 import akka.testkit.TestKit
-import com.github.alextokarew.telegram.bots.domain.Protocol.Responses.Message
+import com.github.alextokarew.telegram.bots.platform.domain.Protocol.Responses.Message
 import com.github.alextokarew.telegram.bots.platform.test.WireMock
 import com.github.tomakehurst.wiremock.client.{WireMock => WM}
 import org.scalatest.{Matchers, WordSpecLike}

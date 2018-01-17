@@ -1,8 +1,8 @@
-package com.github.alextokarew.telegram.bots.platform
+package com.github.alextokarew.telegram.bots.reminder
 
 import akka.actor.{ActorSystem, Props}
-import com.github.alextokarew.telegram.bots.domain.Protocol
-import com.github.alextokarew.telegram.bots.platform.flow.{Poller, Printer}
+import com.github.alextokarew.telegram.bots.platform.domain.Protocol
+import com.github.alextokarew.telegram.bots.platform.actors.{Poller, Printer}
 import com.typesafe.config.ConfigFactory
 import org.slf4j.LoggerFactory
 

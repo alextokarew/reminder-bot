@@ -1,4 +1,4 @@
-package com.github.alextokarew.telegram.bots.platform.flow
+package com.github.alextokarew.telegram.bots.platform.actors
 
 import akka.actor.{Actor, ActorLogging}
 

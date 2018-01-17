@@ -1,12 +1,12 @@
-package com.github.alextokarew.telegram.bots.platform.flow
+package com.github.alextokarew.telegram.bots.platform.actors
 
 import akka.actor.{Actor, ActorLogging, ActorRef, Props}
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model.{HttpRequest, HttpResponse, StatusCodes}
 import akka.http.scaladsl.unmarshalling.Unmarshal
 import akka.stream.{ActorMaterializer, ActorMaterializerSettings}
-import com.github.alextokarew.telegram.bots.domain.Protocol
-import com.github.alextokarew.telegram.bots.domain.Protocol.Responses.{OkWrapper, Update}
+import com.github.alextokarew.telegram.bots.platform.domain.Protocol
+import com.github.alextokarew.telegram.bots.platform.domain.Protocol.Responses.{OkWrapper, Update}
 
 import scala.concurrent.duration._
 
