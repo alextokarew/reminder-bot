@@ -12,11 +12,12 @@ import scala.concurrent.duration._
 class PollerSpec extends TestKit(ActorSystem("PollerSpec")) with WordSpecLike with WireMock with Matchers {
 
   val timeout = 30
+  val retryInterval = 1000
 
   "Poller" should {
     "poll getUpdates method" in {
       val url = s"http://localhost:${wireMockServer.port()}/botToken"
-      val poller = system.actorOf(Poller.props(testActor, url, timeout))
+      val poller = system.actorOf(Poller.props(testActor, url, timeout, retryInterval))
 
       val messages = receiveWhile(messages = 4) {
         case m: Message => m
@@ -37,6 +38,13 @@ class PollerSpec extends TestKit(ActorSystem("PollerSpec")) with WordSpecLike wi
         .withQueryParam("offset", WM.equalTo("219169025"))
         .withQueryParam("timeout", WM.equalTo(timeout.toString))
       )
+    }
+
+    "handle unpredictable situations" in {
+      val url = s"http://bad-url.xxxxx"
+      val poller = system.actorOf(Poller.props(testActor, url, timeout, retryInterval))
+
+      expectNoMessage(1.second)
     }
   }
 

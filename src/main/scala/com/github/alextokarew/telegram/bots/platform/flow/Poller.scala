@@ -8,13 +8,16 @@ import akka.stream.{ActorMaterializer, ActorMaterializerSettings}
 import com.github.alextokarew.telegram.bots.domain.Protocol
 import com.github.alextokarew.telegram.bots.domain.Protocol.Responses.{OkWrapper, Update}
 
+import scala.concurrent.duration._
+
 /**
  * Long-polls Telegram API and retrieves updates and emits unwrapped messages to consumer behind passed actor reference.
  * @param consumer messages consumer actor ref
  * @param url base telegram url
  * @param timeout poll timeout in seconds
+ * @param retryInterval poll retry interval in case of failures, ms
  */
-class Poller(consumer: ActorRef, url: String, timeout: Int) extends Actor with Protocol with ActorLogging {
+class Poller(consumer: ActorRef, url: String, timeout: Int, retryInterval: Int) extends Actor with Protocol with ActorLogging {
   import Poller._
   import akka.pattern.pipe
   import context.dispatcher
@@ -51,7 +54,9 @@ class Poller(consumer: ActorRef, url: String, timeout: Int) extends Actor with P
       }
       self ! Poll
 
-    //TODO: deal with failures and with bad http status codes, maybe write to log and go to the feedback loop
+    case unhandled =>
+      log.warning("Some unpredictable result: {}", unhandled)
+      context.system.scheduler.scheduleOnce(retryInterval.millis, self, Poll)
   }
 
   def receive: Receive = process(0)
@@ -62,5 +67,6 @@ object Poller extends Protocol {
 
   case object Poll
 
-  def props(consumer: ActorRef, url: String, timeout: Int) = Props(classOf[Poller], consumer, url, timeout)
+  def props(consumer: ActorRef, url: String, timeout: Int, retryInterval: Int) =
+    Props(classOf[Poller], consumer, url, timeout, retryInterval)
 }

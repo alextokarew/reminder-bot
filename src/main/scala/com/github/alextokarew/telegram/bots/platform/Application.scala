@@ -19,10 +19,10 @@ object Application extends Protocol {
     val token = config.getString("telegram.bot.token")
     val url = config.getString("telegram.api.url").replace("<token>", token)
     val timeout = config.getInt("telegram.poller.timeout")
+    val retryInterval = config.getInt("telegram.poller.retryInterval")
 
-    val printer = system.actorOf(Props[Printer])
-    system.actorOf(Poller.props(printer, url, timeout))
-// TODO: val poller = system.actorOf(Poller.props(url, timeout, router, apiConnector))
+    val printer = system.actorOf(Props[Printer], "printer")
+    system.actorOf(Poller.props(printer, url, timeout, retryInterval), "poller")
 
     sys.addShutdownHook {
       system.terminate()
